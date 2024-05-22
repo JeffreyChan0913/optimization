@@ -39,17 +39,17 @@ The amount of data set we generate will be the same as the number of test runs w
 
 Result below is using the following configuration:  
 
-1.Number of Monte Carlo iteration: 500
-2.Number of thread: 10
-3.Gradient descent iteration: 5000
-4.Number of trail (data sets): 100
-5.Number of observation (number of row for the generated data): 1000
-6.Gradient descent $\alpha$: 0.0001
-7.Number of data sets (same as number of test run): 100
-8.Number of observations for each data set: 1000
-9.Number of coefficient: 3
-10.Y intercept: Yes
-11.Train test split: 70/30
+1. Number of Monte Carlo iteration: 500
+2. Number of thread: 10
+3. Gradient descent iteration: 5000
+4. Number of trail (data sets): 100
+5. Number of observation (number of row for the generated data): 1000
+6. Gradient descent $\alpha$: 0.0001
+7. Number of data sets (same as number of test run): 100
+8. Number of observations for each data set: 1000
+9. Number of coefficient: 3
+10 .Y intercept: Yes
+11 .Train test split: 70/30
 
 **Train error** plot
 ![screenshot](resource/0521mc_gd_MSE_train.png)  
@@ -65,17 +65,17 @@ Monte Carlo does out run the traditional gradient descent although it takes more
 ### Result 2
 Result below is using the following configuration:  
 
-1.Number of Monte Carlo iteration: 1000
-2.Number of thread: 10
-3.Gradient descent iteration: 10000
-4.Number of trail (data sets): 100
-5.Number of observation (number of row for the generated data): 1000
-6.Gradient descent $\alpha$: 0.0001
-7.Number of data sets (same as number of test run): 100
-8.Number of observations for each data set: 1000
-9.Number of coefficient: 3
-10.Y intercept: Yes
-11.Train test split: 70/30
+1. Number of Monte Carlo iteration: 1000
+2. Number of thread: 10
+3. Gradient descent iteration: 10000
+4. Number of trail (data sets): 100
+5. Number of observation (number of row for the generated data): 1000
+6. Gradient descent $\alpha$: 0.0001
+7. Number of data sets (same as number of test run): 100
+8. Number of observations for each data set: 1000
+9. Number of coefficient: 3
+10 .Y intercept: Yes
+11 .Train test split: 70/30
 
 **Train error** plot
 ![screenshot](resource/0521mc1_gd1_MSE_train.png)  
