@@ -37,7 +37,8 @@ The amount of data set we generate will be the same as the number of test runs w
 
 ### Result 1
 
-Result below is using the following configuration:
+Result below is using the following configuration:  
+
 1.Number of Monte Carlo iteration: 500
 2.Number of thread: 10
 3.Gradient descent iteration: 5000
@@ -62,7 +63,8 @@ Result below is using the following configuration:
 Monte Carlo does out run the traditional gradient descent although it takes more time to run each dataset. The time usage can be decreased by decreasing the Monte Carlo iterations and increase the amount of threads.  
 
 ### Result 2
-Result below is using the following configuration:
+Result below is using the following configuration:  
+
 1.Number of Monte Carlo iteration: 1000
 2.Number of thread: 10
 3.Gradient descent iteration: 10000
