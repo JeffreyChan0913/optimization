@@ -48,8 +48,8 @@ Result below is using the following configuration:
 7. Number of data sets (same as number of test run): 100
 8. Number of observations for each data set: 1000
 9. Number of coefficient: 3
-10 .Y intercept: Yes
-11 .Train test split: 70/30
+10. Y intercept: Yes
+11. Train test split: 70/30
 
 **Train error** plot
 ![screenshot](resource/0521mc_gd_MSE_train.png)  
@@ -74,8 +74,8 @@ Result below is using the following configuration:
 7. Number of data sets (same as number of test run): 100
 8. Number of observations for each data set: 1000
 9. Number of coefficient: 3
-10 .Y intercept: Yes
-11 .Train test split: 70/30
+10. Y intercept: Yes
+11. Train test split: 70/30
 
 **Train error** plot
 ![screenshot](resource/0521mc1_gd1_MSE_train.png)  
