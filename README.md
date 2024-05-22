@@ -28,7 +28,7 @@ Gradient descent iteration is the amount of iteration we will run for each data 
 3.Number of coefficient: 3
 4.Y intercept: Yes
 
-The amount of data set we generate will be the same as the number of test runs we would like to test. In addition, each data set has 1000 rows and 4 $\betas$ in total including $\beta_0, \beta_1, \beta_2, \beta_3$. To be fair, Gradient descent iteration will be the number of thread times number of Monte Carlo iteration.  
+The amount of data set we generate will be the same as the number of test runs we would like to test. In addition, each data set has 1000 rows and 4 $\beta$ in total including $\beta_0, \beta_1, \beta_2, \beta_3$. To be fair, Gradient descent iteration will be the number of thread times number of Monte Carlo iteration.  
 
 
 
