@@ -3,9 +3,10 @@ import numpy as np
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import random
 from tqdm import tqdm
+import time
 
 def ComputeLoss(betas: np.array, xt: int, yt: int) -> np.ndarray:
-	return sum((xt @ betas - yt)**2)
+	return (sum((xt @ betas - yt)**2))/xt.shape[0]
 
 def MonteCarloGetOptimialValues(error, beta):
     OptimalIndex = error.index(min(error))
@@ -19,45 +20,54 @@ def MonteCarloEstimationMinMax(xt):
 
 def MonteCarloEstimationWorker(xt, yt, low, high, iteration):
     OptimalMSE = sys.maxsize
+    a = time.process_time()
     for i in range(iteration):
         betas = np.round(np.random.uniform(low, high, size=(xt.shape[1],1)),2)
-        MSE_error = sum(ComputeLoss(betas, xt, yt))/xt.shape[0]
+        MSE_error = ComputeLoss(betas, xt, yt)
         OptimalBetas = np.nan
         if MSE_error < OptimalMSE:
             OptimalError = MSE_error
             OptimalBetas = betas
+    b = time.process_time()
+    print(f"MCE Worker took: {b-a} second")
     return OptimalBetas, OptimalMSE
 
-def DistributedMCE(xt, yt, iteration= 1_000, numberOfThreads = 10):
-	low, high = MonteCarloEstimationMinMax(xt)
+def DistributedMCE(xt, yt, low, high, iteration= 1_000, numberOfThreads = 10):
 	print("Starting up the threads")
 	with ThreadPoolExecutor(max_workers=numberOfThreads) as executor:
+		a = time.process_time()
 		futures = [
 			executor.submit(MonteCarloEstimationWorker, xt, yt, low, high, iteration)
 			for _ in range(numberOfThreads)
 		]
+		b = time.process_time()
+		print(f"Spinning the threads and add future to futures list took {b-a} second")
 		print("All tasks assigned to threads")
 		OptimalMSE   = sys.maxsize
 		OptimalBetas = np.nan 
 		print("Pending results from threads")
+		a = time.process_time()
 		for future in tqdm(as_completed(futures), total=numberOfThreads):
 			betas, error = future.result()
 			if error <= OptimalMSE:
 				OptimalMSE   = error
 				OptimalBetas = betas
-		
+		b = time.process_time()
+		print(f"Merging solution took {b-a} second")		
 	print("---------------------- Returning results -----------------------") 
 	return OptimalMSE, OptimalBetas
 	
-def MonteCarloEstimation(xt, yt, iteration=500):
-	low, high = MonteCarloEstimationMinMax(xt)
+def MonteCarloEstimation(xt, yt, low, high, iteration=1000):
 	betasValues = []
 	lossValues  = []
-	for i in tqdm(range(1000)):
+	a = time.process_time()
+	for i in tqdm(range(iteration)):
 		betas = np.random.uniform(low,high, size=(xt.shape[1],1))
 		betasValues.append(betas)
 		error = ComputeLoss(betas, xt, yt)
 		lossValues.append(error)
+	b = time.process_time()
+	print(f"Single threaded MCE took {b-a} second")
 	return lossValues, betasValues
 
 def BinaryGridSearchPointGenerator(low, high, numFeatures, direction):
