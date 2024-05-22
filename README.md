@@ -1,4 +1,4 @@
-#Gradient Free Optimizer
+# Gradient Free Optimizer
 
 In this research project, I am researching a gradient free optimizer that exploits multi-threads to search for the wegiths.
 
