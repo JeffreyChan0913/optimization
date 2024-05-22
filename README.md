@@ -15,7 +15,9 @@ NUmber of test run is how many tests we would like to compare the result from Mo
 #### Monte Carlo configuration
 1.Number of Monte Carlo sample iteration (for each thread): 1000
 2.Number of thread: 10
-Number of Monte Carlo sample iteration is how many samples we create to estimate the weight for each data set in each thread. The total amount of thread we are using is 10. 
+Number of Monte Carlo sample iteration is how many samples we create to estimate the weight for each data set in each thread. The total amount of thread we are using is 10.  
+
+In this test run, we are running a total of 10,000 iterations for each data set to find the best result.
 
 #### Gradient descent configuration
 1.Gradient descent iteration: 10000
@@ -28,7 +30,21 @@ Gradient descent iteration is the amount of iteration we will run for each data 
 3.Number of coefficient: 3
 4.Y intercept: Yes
 
-The amount of data set we generate will be the same as the number of test runs we would like to test. In addition, each data set has 1000 rows and 4 $\beta$ in total including $\beta_0, \beta_1, \beta_2, \beta_3$. To be fair, Gradient descent iteration will be the number of thread times number of Monte Carlo iteration.  
+### Data spliting configuration
+1. 70/30 split
+
+The amount of data set we generate will be the same as the number of test runs we would like to test. In addition, each data set has 1000 rows and 4 $\beta$ in total including $\beta_0,\; \beta_1,\; \beta_2,\; \beta_3$. To be fair, Gradient descent iteration will be the number of thread times number of Monte Carlo iteration.  
+
+### Result
+
+**Train error** plot
+![screenshot](resouce/0521v1_MSE_train.png)
+**Test error** plot
+![screenshot](resouce/0521v1_MSE_test.png)
+**Test error** plot
+![screenshot](resouce/0521v1_performance.png)
+
+Monte Carlo does out run the traditional gradient descent although it takes more time to run each dataset. The time usage can be decreased by decreasing the Monte Carlo iterations and increase the amount of threads.
 
 
 
