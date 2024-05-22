@@ -20,13 +20,13 @@ def MonteCarloEstimationMinMax(xt):
 
 def MonteCarloEstimationWorker(xt, yt, low, high, iteration):
     OptimalMSE = sys.maxsize
+    OptimalBetas = np.nan
     a = time.process_time()
     for i in range(iteration):
         betas = np.round(np.random.uniform(low, high, size=(xt.shape[1],1)),2)
         MSE_error = ComputeLoss(betas, xt, yt)
-        OptimalBetas = np.nan
         if MSE_error < OptimalMSE:
-            OptimalError = MSE_error
+            OptimalMSE = MSE_error
             OptimalBetas = betas
     b = time.process_time()
     print(f"MCE Worker took: {b-a} second")

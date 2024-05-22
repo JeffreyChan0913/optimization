@@ -9,8 +9,8 @@ import time
 MC_Iteration     = 1000
 numOfThread      = 10
 GD_Iteration     = MC_Iteration*numOfThread
-GD_alpha         = 0.000001
-numOfTrial       = 100
+GD_alpha         = 0.001
+numOfTrial       = 10
 numOfObservation = 1000
 
 with open('0521v1/configuration.txt', 'w') as config:                                                       # Log down the configuration
@@ -37,7 +37,7 @@ with open('0522v1/mc.txt', 'w') as mc,  open('0522v1/gd.txt', 'w') as gd:       
         mc.write(',')                                                                                       # Write a comma to file
         mc.write(','.join(str(val) for val in beta))                                                        # Write beta (generated beta) to file
         mc.write(',')                                                                                       # Write comma to file 
-        output = [MC_train_loss, MC_test_loss, round(total,8)]                                              # Write data to file
+        output = [MC_train_loss[0], MC_test_loss[0], round(total,8)]                                              # Write data to file
         mc.write(','.join(str(val) for val in output))                                                      # Write Monte Carlo training loss, Monte Carlo test loss and time to file
         mc.write(',')                                                                                       # Write comma to file
         mc.write('\n')                                                                                      # Write newline to file
@@ -49,8 +49,8 @@ with open('0522v1/mc.txt', 'w') as mc,  open('0522v1/gd.txt', 'w') as gd:       
         b = time.process_time()                                                                             # Performance metric: track the time
         total = b - a                                                                                       # Performance metric: track the time
         GD_train_loss = GD_train_loss[-1]                                                                   # Calculate the Mean Sqaured Error for train set
-        GD_test_loss = comLoss(GD_beta, xts, yts)                                                           # Calculate the Mean Sqaured Error for test set
         GD_beta = GD_beta[-1]                                                                               # Get the optimal betas from gradient descent
+        GD_test_loss = comLoss(GD_beta, xts, yts)                                                           # Calculate the Mean Sqaured Error for test set
         gd.write(','.join(str(val) for val in GD_beta.flatten().tolist()))                                  # Write data to file
         gd.write(',')                                                                                       # Write data to file
         gd.write(','.join(str(val) for val in beta))                                                        # Write data to file
