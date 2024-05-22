@@ -38,11 +38,13 @@ The amount of data set we generate will be the same as the number of test runs w
 ### Result
 
 **Train error** plot
-![screenshot](resouce/0521v1_MSE_train.png)
+![screenshot](resource/0521v1_MSE_train.png)  
+
 **Test error** plot
-![screenshot](resouce/0521v1_MSE_test.png)
+![screenshot](resource/0521v1_MSE_test.png)  
+
 **Test error** plot
-![screenshot](resouce/0521v1_performance.png)
+![screenshot](resource/0521v1_performance.png)  
 
 Monte Carlo does out run the traditional gradient descent although it takes more time to run each dataset. The time usage can be decreased by decreasing the Monte Carlo iterations and increase the amount of threads.
 
