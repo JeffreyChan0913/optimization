@@ -13,22 +13,22 @@ In this research project, I am researching a gradient free optimizer that exploi
 NUmber of test run is how many tests we would like to compare the result from Monte Carlo simulation and the traditional gradient descent. In this configuration, we will compare a total of 100 results. 
 
 #### Monte Carlo configuration
-1.Number of Monte Carlo sample iteration (for each thread): 1000
-2.Number of thread: 10
+1. Number of Monte Carlo sample iteration (for each thread): 1000
+2. Number of thread: 10
 Number of Monte Carlo sample iteration is how many samples we create to estimate the weight for each data set in each thread. The total amount of thread we are using is 10.  
 
 In this test run, we are running a total of 10,000 iterations for each data set to find the best result.
 
 #### Gradient descent configuration
-1.Gradient descent iteration: 10000
-2.$\alpha$: 0.0001
+1. Gradient descent iteration: 10000
+2. $\alpha$: 0.0001
 Gradient descent iteration is the amount of iteration we will run for each data set. In addition, the $\alpha$ is the learning rate that is used.
 
 #### Linear regression data configuration
-1.Number of data sets (same as number of test run): 100
-2.Number of observations for each data set: 1000
-3.Number of coefficient: 3
-4.Y intercept: Yes
+1. Number of data sets (same as number of test run): 100
+2. Number of observations for each data set: 1000
+3. Number of coefficient: 3
+4. Y intercept: Yes
 
 ### Data spliting configuration
 1. 70/30 split
