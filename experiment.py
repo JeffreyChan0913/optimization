@@ -1,6 +1,6 @@
 import sys
 import numpy as np
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ProcessPoolExecutor, as_completed
 import random
 from tqdm import tqdm
 import time
@@ -34,7 +34,7 @@ def MonteCarloEstimationWorker(xt, yt, low, high, iteration):
 
 def DistributedMCE(xt, yt, low, high, iteration= 1_000, numberOfThreads = 10):
 	print("Starting up the threads")
-	with ThreadPoolExecutor(max_workers=numberOfThreads) as executor:
+	with ProcessPoolExecutor(max_workers=numberOfThreads) as executor:
 		a = time.process_time()
 		futures = [
 			executor.submit(MonteCarloEstimationWorker, xt, yt, low, high, iteration)
