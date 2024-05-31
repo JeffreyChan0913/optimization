@@ -1,70 +1,65 @@
-import sys
-import numpy as np
 from concurrent.futures import ProcessPoolExecutor, as_completed
-import random
 from tqdm import tqdm
+import numpy as np
+import random
 import time
+import sys
+import os
 
-def ComputeLoss(betas: np.array, xt: int, yt: int) -> np.ndarray:
-	return (sum((xt @ betas - yt)**2))/xt.shape[0]
+def ComputeLoss(betas: np.array, x: np.array, y: np.array) -> np.ndarray:
+	return (sum((x @ betas - y)**2))/x.shape[0]
 
 def MonteCarloGetOptimialValues(error, beta):
     OptimalIndex = error.index(min(error))
     return error[OptimalIndex], beta[OptimalIndex] 
 
-def MonteCarloEstiamtionAvgCol(xt, n):
-	return [xt[:,i].sum()/n for i in range(xt.shape[1])]
+def MonteCarloEstiamtionAvgCol(x, n):
+	return [x[:,i].sum()/n for i in range(x.shape[1])]
 
-def MonteCarloEstimationMinMax(xt):
-	return min(xt.min(axis=1)), max(xt.max(axis=1))
+def MonteCarloEstimationMinMax(x):
+	return min(x.min(axis=1)), max(x.max(axis=1))
 
-def MonteCarloEstimationWorker(xt, yt, low, high, iteration):
+def MonteCarloEstimationWorker(x, y, low, high, iteration):
     OptimalMSE = sys.maxsize
     OptimalBetas = np.nan
-    a = time.process_time()
+    pid = os.getpid()
+    print(f'PID: {pid}')
+    np.random.seed(seed=pid)
     for i in range(iteration):
-        betas = np.round(np.random.uniform(low, high, size=(xt.shape[1],1)),2)
-        MSE_error = ComputeLoss(betas, xt, yt)
+        betas = np.round(np.random.uniform(low, high, size=(x.shape[1],1)),2)
+        MSE_error = ComputeLoss(betas, x, y)
         if MSE_error < OptimalMSE:
             OptimalMSE = MSE_error
             OptimalBetas = betas
-    b = time.process_time()
-    print(f"MCE Worker took: {b-a} second")
+    print(f"Best MSE {OptimalMSE}")
     return OptimalBetas, OptimalMSE
 
-def DistributedMCE(xt, yt, low, high, iteration= 1_000, numberOfThreads = 10):
-	print("Starting up the threads")
+def DistributedMCE(x, y, low, high, iteration= 1_000, numberOfThreads = 10):
+	start = time.perf_counter()
 	with ProcessPoolExecutor(max_workers=numberOfThreads) as executor:
-		a = time.process_time()
 		futures = [
-			executor.submit(MonteCarloEstimationWorker, xt, yt, low, high, iteration)
+			executor.submit(MonteCarloEstimationWorker, x, y, low, high, iteration)
 			for _ in range(numberOfThreads)
 		]
-		b = time.process_time()
-		print(f"Spinning the threads and add future to futures list took {b-a} second")
-		print("All tasks assigned to threads")
 		OptimalMSE   = sys.maxsize
 		OptimalBetas = np.nan 
-		print("Pending results from threads")
-		a = time.process_time()
 		for future in tqdm(as_completed(futures), total=numberOfThreads):
 			betas, error = future.result()
 			if error <= OptimalMSE:
 				OptimalMSE   = error
 				OptimalBetas = betas
-		b = time.process_time()
-		print(f"Merging solution took {b-a} second")		
-	print("---------------------- Returning results -----------------------") 
-	return OptimalMSE, OptimalBetas
+	stop = time.perf_counter()
+	print(f"time take for DMCE {stop-start} seconds")
+	return OptimalMSE, OptimalBetas, (stop-start)
 	
-def MonteCarloEstimation(xt, yt, low, high, iteration=1000):
+def MonteCarloEstimation(x, y, low, high, iteration=1000):
 	betasValues = []
 	lossValues  = []
 	a = time.process_time()
 	for i in tqdm(range(iteration)):
-		betas = np.random.uniform(low,high, size=(xt.shape[1],1))
+		betas = np.random.uniform(low,high, size=(x.shape[1],1))
 		betasValues.append(betas)
-		error = ComputeLoss(betas, xt, yt)
+		error = ComputeLoss(betas, x, y)
 		lossValues.append(error)
 	b = time.process_time()
 	print(f"Single threaded MCE took {b-a} second")
@@ -92,17 +87,19 @@ def BinaryGridSearch(xt, yt, low, high, iteration = 1_000):
 		currentLoss = ComputeLoss()
 		#if firstRun:
 
-def GradientDescent(xt, yt, alpha=0.0001, iteration = 1000):
-	betas = np.random.uniform(0,1,size=(xt.shape[1],1))
-	m = xt.shape[0]
+def GradientDescent(x, y, alpha=0.0001, iteration = 1000):
+	print(f"Number of iteration: {iteration}")
+	start = time.perf_counter()
+	betas = np.random.uniform(0,1,size=(x.shape[1],1))
+	m = x.shape[0]
 	betasValues = []
 	betasValues.append(betas)
-	lossRecord = []
-	
+	lossRecord = []	
 	for i in tqdm(range(iteration)):
-		loss = ComputeLoss(betas, xt, yt)
+		loss = ComputeLoss(betas, x, y)
 		lossRecord.append(loss)
-		betas = betas - alpha * 2/m * (xt.T@(xt@betas - yt))
+		betas = betas - alpha * 2/m * (x.T@(x@betas - y))
 		betasValues.append(betas)
-
-	return lossRecord, betasValues
+	stop = time.perf_counter()
+	print(f"Gradient descent took: {stop-start} seconds")
+	return lossRecord, betasValues, (stop-start)
