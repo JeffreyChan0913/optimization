@@ -1,6 +1,5 @@
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from multiprocessing import Manager, Lock
-from scipy.stats import qmc
 from threading import Lock
 from tqdm import tqdm
 import numpy as np
