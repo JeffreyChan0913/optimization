@@ -29,7 +29,7 @@ def info() -> None:
 	print('------------------------------------------------------------------------------') 
 
 
-def generate_matrix(row:int, col:int, intercept:bool, moreBais: bool, verbose = False) -> np.array:
+def generate_matrix(row:int, col:int, intercept:bool, verbose = False) -> np.array:
 
 	t = int(time.time() * 1000.0)
 	np.random.seed( ((t & 0xff000000) >> 24) + ((t & 0x00ff0000) >>  8) + ((t & 0x0000ff00) <<  8) + ((t & 0x000000ff) << 24)   )
@@ -51,9 +51,6 @@ def generate_matrix(row:int, col:int, intercept:bool, moreBais: bool, verbose = 
 		mu = getMu()
 		sd = getSd()
 		xt  = np.column_stack((xt, np.random.normal(mu,sd,row)))
-		if moreBais:
-			mu = getMu()
-			sd = getSd()
 		xts = np.column_stack((xts, np.random.normal(mu,sd,test_data_cutoff)))
 				
 	mu = getMu()

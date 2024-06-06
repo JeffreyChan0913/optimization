@@ -42,18 +42,18 @@ def main():
 
     with open(folderName + testName + 'mc.txt', 'w') as mc,  open(folderName + testName + 'gd.txt', 'w') as gd: # Log Monte Carlo estimation and Gradient descent to file 
         for i in tqdm(range(numOfTrial)):
-            xt, xts, yt, yts, beta = LR.generate_matrix(numOfObservation, numOfFeatures, True, False, False)    # Generate linear regression data
+            xt, xts, yt, yts, beta = LR.generate_matrix(numOfObservation, numOfFeatures, True, False)           # Generate linear regression data
 
             ### Monte Carlo estimation starts here
             low, high = MCEMM(xt)                                                                               # Get the min and max as search space Monte Carlo Estimation 
-            MC_train_loss, MC_beta, perf_t = DMCE(xt, yt, low, high, iteration = MC_Iteration, numberOfThreads = numOfThread)                  # Monte Carlo estimation
+            MC_train_loss, MC_beta, perf_t = DMCE(xt, yt, low, high, iteration = MC_Iteration, numberOfThreads = numOfThread) # Monte Carlo estimation
             MC_test_loss = comLoss(MC_beta, xts, yts)                                                           # Calculate the Mean Sqaured Error for the test set
             mc.write(','.join(str(val) for val in MC_beta.flatten().tolist()))                                  # Log Monte Carlo beta to file
             mc.write(',')                                                                                       # Write a comma to file
             mc.write(','.join(str(val) for val in beta.flatten().tolist()))                                     # Write beta (generated beta) to file
             mc.write(',')                                                                                       # Write comma to file 
             print(f'MC train loss shape: {MC_train_loss.shape}')
-            output = [MC_train_loss, MC_test_loss, round(perf_t,8)]                                       # Write data to file
+            output = [MC_train_loss, MC_test_loss, round(perf_t,8)]                                             # Write data to file
             mc.write(','.join(str(val) for val in output))                                                      # Write Monte Carlo training loss, Monte Carlo test loss and time to file
             mc.write(',')                                                                                       # Write comma to file
             mc.write('\n')                                                                                      # Write newline to file
@@ -68,15 +68,15 @@ def main():
             gd.write(',')                                                                                       # Write data to file
             gd.write(','.join(str(val) for val in beta.flatten().tolist()))                                     # Write data to file
             gd.write(',')                                                                                       # Write data to file
-            output = [GD_train_loss, GD_test_loss, round(perf_t,8)]                                       # Write data to file
+            output = [GD_train_loss, GD_test_loss, round(perf_t,8)]                                             # Write data to file
             gd.write(','.join(str(val) for val in output))                                                      # Write data to file
             gd.write(',')                                                                                       # Write data to file
             gd.write('\n')                                                                                      # Write data to file
 
             ### Gradient Descent ends here
             ### Stats
-            print(f'MC TL: {MC_train_loss}\t MCTsL: {MC_test_loss}')
-            print(f'GD TL: {GD_train_loss}\t GDTsL: {GD_test_loss}')
+            print(f'MC TL: {MC_train_loss}\t MCTsL: {MC_test_loss}')                                            # Print Monte Carlo train and test loss  
+            print(f'GD TL: {GD_train_loss}\t GDTsL: {GD_test_loss}')                                            # Print Gradient Descent train and test loss  
         mc.close()                                                                                              # Close Monte Carlo file
         gd.close()                                                                                              # Close Gradient Descent file
 
